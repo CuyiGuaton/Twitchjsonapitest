@@ -1,19 +1,15 @@
 function callJSON() {
-//    for (var i in channels) {
+    for (var i in channels) {
         $.ajax({
-            url: 'https://api.twitch.tv/kraken/channels/ESL_SC2',
+            url: 'https://api.twitch.tv/kraken/channels/' + channels[i],
             dataType: 'jsonp',
             type: 'GET',
-            async: false,
-            headers: {
-                'Api-User-Agent': 'Example/1.0'
-            },
             success: function(data) {
                 makeCard(data);
                 console.log(data.logo + '\n');
             }
         });
-//    }
+    }
 }
 
 function makeCard(data) {
@@ -26,5 +22,5 @@ function makeCard(data) {
 }
 
 
-//var channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
+var channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
 callJSON();
