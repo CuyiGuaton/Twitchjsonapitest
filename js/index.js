@@ -5,7 +5,7 @@ function channelInfo(channelName) {
         channelLink = '',
         channelLogo = '',
         channelDisplayName = '';
-    var data = $.parseJSON($.ajax({
+    var data = $.ajax({
             url: 'https://api.twitch.tv/kraken/streams/' + channelName,
             dataType: 'jsonp',
             type: 'GET',
@@ -24,9 +24,6 @@ function channelInfo(channelName) {
                         status = data.stream.channel.status;
                         game = data.stream.game;
                     };
-
-
-
                     $.ajax({
                         url: 'https://api.twitch.tv/kraken/channels/' + channelName,
                         dataType: 'jsonp',
@@ -37,10 +34,11 @@ function channelInfo(channelName) {
                             channelDisplayName = data.display_name != null ? data.display_name : channelName;
                             channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
                             //  console.log(data.logo + '\n');
+                            console.log( game + status + channelLink + channelLogo + channelDisplayName);
                         }
                     });
                 }
-                //console.log( game + status + channelLink + channelLogo + channelDisplayName);
+
         });
     }
 
