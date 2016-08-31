@@ -1,15 +1,41 @@
-function callJSON() {
-    for (var i in channels) {
-        $.ajax({
-            url: 'https://api.twitch.tv/kraken/channels/' + channels[i],
-            dataType: 'jsonp',
-            type: 'GET',
-            success: function(data) {
-                makeCard(data);
-                console.log(data.logo + '\n');
-            }
-        });
-    }
+function channelInfo(channelName) {
+    var IsOnline =false, game='', status='', channelLink='', channelLogo='', channelDisplayName='';
+    var data =$.parseJSON( $.ajax({
+        url: 'https://api.twitch.tv/kraken/streams/' + channelName,
+        dataType: 'jsonp',
+        type: 'GET',
+        async: false,
+        success: function(data) {
+            if (data.stream === null) {
+                IsOnline = false;
+                status = "Offline";
+                game = '';
+            } else if (data.stream === undefined) {
+                IsOnline = false;
+                  status = data.message;
+                game = '';
+            } else {
+                IsOnline = true;
+                status = data.stream.channel.status;
+                game = data.stream.game;
+            };
+
+        }
+    }).responseText);
+    $.ajax({
+        url: 'https://api.twitch.tv/kraken/channels/' + channelName,
+        dataType: 'jsonp',
+        type: 'GET',
+        async: false,
+        success: function(data) {
+          channelLogo = data.logo != null ? data.logo : 'http://www.socialgiri.com/wp-content/uploads/2013/08/about-thumbnail-placeholder.png';
+          channelDisplayName = data.display_name != null ? data.display_name : channelName;
+          channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
+            //  console.log(data.logo + '\n');
+        }
+    });
+    //console.log( game + status + channelLink + channelLogo + channelDisplayName);
+    console.log(game);
 }
 
 function makeCard(data) {
@@ -23,4 +49,6 @@ function makeCard(data) {
 
 
 var channels = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
-callJSON();
+for (var i in channels) {
+    channelInfo(channels[i]);
+}
