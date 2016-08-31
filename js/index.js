@@ -34,7 +34,7 @@ function channelInfo(channelName) {
                             channelDisplayName = data.display_name != null ? data.display_name : channelName;
                             channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
                             //  console.log(data.logo + '\n');
-                            console.log( game + status + channelLink + channelLogo + channelDisplayName);
+                            console.log( game + status + channelLogo + channelDisplayName + ' ' + channelLink);
                         }
                     });
                 }
