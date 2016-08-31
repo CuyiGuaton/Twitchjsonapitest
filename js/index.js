@@ -1,41 +1,35 @@
 function channelInfo(channelName) {
     var IsOnline =false, game='', status='', channelLink='', channelLogo='', channelDisplayName='';
-    var data =$.parseJSON( $.ajax({
-        url: 'https://api.twitch.tv/kraken/streams/' + channelName,
-        dataType: 'jsonp',
-        type: 'GET',
-        async: false,
-        success: function(data) {
-            if (data.stream === null) {
-                IsOnline = false;
-                status = "Offline";
-                game = '';
-            } else if (data.stream === undefined) {
-                IsOnline = false;
-                  status = data.message;
-                game = '';
-            } else {
-                IsOnline = true;
-                status = data.stream.channel.status;
-                game = data.stream.game;
-            };
-
-        }
-    }).responseText);
-    $.ajax({
-        url: 'https://api.twitch.tv/kraken/channels/' + channelName,
-        dataType: 'jsonp',
-        type: 'GET',
-        async: false,
-        success: function(data) {
-          channelLogo = data.logo != null ? data.logo : 'http://www.socialgiri.com/wp-content/uploads/2013/08/about-thumbnail-placeholder.png';
-          channelDisplayName = data.display_name != null ? data.display_name : channelName;
-          channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
-            //  console.log(data.logo + '\n');
-        }
-    });
+    var data = getData("streams", channelName);
+    if (data.stream === null) {
+        IsOnline = false;
+        status = "Offline";
+        game = '';
+    } else if (data.stream === undefined) {
+        IsOnline = false;
+          status = data.message;
+        game = '';
+    } else {
+        IsOnline = true;
+        status = data.stream.channel.status;
+        game = data.stream.game;
+    };
+    data = getData("channels", channelName);
+    channelLogo = data.logo != null ? data.logo : 'http://www.socialgiri.com/wp-content/uploads/2013/08/about-thumbnail-placeholder.png';
+    channelDisplayName = data.display_name != null ? data.display_name : channelName;
+    channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
     //console.log( game + status + channelLink + channelLogo + channelDisplayName);
     console.log(game);
+}
+
+function getData(type, channelName) {
+  return $.parseJSON( $.ajax({
+      url: 'https://api.twitch.tv/kraken/' + type + '/' + channelName,
+      dataType: 'jsonp',
+      type: 'GET',
+      async: false,
+  }).responseText);
+
 }
 
 function makeCard(data) {
