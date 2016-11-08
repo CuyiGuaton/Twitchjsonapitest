@@ -6,10 +6,9 @@ function channelInfo(channelName) {
         channelLogo = '',
         channelDisplayName = '';
     var data = $.ajax({
-            url: 'https://api.twitch.tv/kraken/streams/' + channelName,
+            url: 'https://wind-bow.hyperdev.space/twitch-api/streams/' + channelName,
             dataType: 'jsonp',
             type: 'GET',
-            async: false,
             success: function(data) {
                     if (data.stream === null) {
                         IsOnline = false;
@@ -25,16 +24,18 @@ function channelInfo(channelName) {
                         game = data.stream.game;
                     };
                     $.ajax({
-                        url: 'https://api.twitch.tv/kraken/channels/' + channelName,
+                        url: 'https://wind-bow.hyperdev.space/twitch-api/channels/' + channelName,
                         dataType: 'jsonp',
                         type: 'GET',
-                        async: false,
                         success: function(data) {
                             channelLogo = data.logo != null ? data.logo : 'http://www.socialgiri.com/wp-content/uploads/2013/08/about-thumbnail-placeholder.png';
                             channelDisplayName = data.display_name != null ? data.display_name : channelName;
                             channelLink = data.url != null ? data.url : "https://www.twitch.tv/" + channelName;
                             //  console.log(data.logo + '\n');
                             console.log( game + status + channelLogo + channelDisplayName + ' ' + channelLink);
+                            html = '<h2 class="header">Horizontal Card</h2> <div   class="card horizontal">  <div class="card-image"> <img src="' + channelLogo;
+                            html += '">      </div>      <div class="card-stacked">        <div class="card-content">          <p>I am a very simple card. I am good at containing small bits of information.</p>        </div>        <div class="card-action">          <a href="#">This is a link</a>        </div>      </div>    </div>'
+                            $("#result").html(html);
                         }
                     });
                 }
