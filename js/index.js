@@ -6,10 +6,9 @@ function channelInfo(channelName) {
         channelLogo = '',
         channelDisplayName = '';
     var data = $.ajax({
-            url: 'https://api.twitch.tv/kraken/streams/' + channelName,
-            dataType: 'jsonp',
             type: 'GET',
-            async: false,
+            url: 'https://wind-bow.hyperdev.space/twitch-api/streams/' + channelName,
+
             success: function(data) {
                     if (data.stream === null) {
                         IsOnline = false;
@@ -25,10 +24,9 @@ function channelInfo(channelName) {
                         game = data.stream.game;
                     };
                     $.ajax({
-                        url: 'https://api.twitch.tv/kraken/channels/' + channelName,
-                        dataType: 'jsonp',
                         type: 'GET',
-                        async: false,
+                        url: 'https://wind-bow.hyperdev.space/twitch-api/channels/' + channelName,
+
                         success: function(data) {
                             channelLogo = data.logo != null ? data.logo : 'http://www.socialgiri.com/wp-content/uploads/2013/08/about-thumbnail-placeholder.png';
                             channelDisplayName = data.display_name != null ? data.display_name : channelName;
